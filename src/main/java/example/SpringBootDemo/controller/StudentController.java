@@ -1,9 +1,14 @@
 package example.SpringBootDemo.controller;
 
+import example.SpringBootDemo.DTO.UpdateStudentResponseDTO;
+
+import example.SpringBootDemo.DTO.CreateStudentRequestDTO;
+import example.SpringBootDemo.DTO.CreateStudentResponseDTO;
+import example.SpringBootDemo.DTO.UpdateStudentRequestDTO;
 import example.SpringBootDemo.entity.Student;
 import example.SpringBootDemo.service.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,19 +25,19 @@ public class StudentController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+    public ResponseEntity<CreateStudentResponseDTO> createStudent(@Valid @RequestBody CreateStudentRequestDTO createStudentRequestDTO) {
 
-        Student createdStudent =
-                studentService.createStudent(student);
+        CreateStudentResponseDTO createdStudent =
+                studentService.createStudent(createStudentRequestDTO);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(createdStudent);
     }
 
     @GetMapping("/get")
-    public ResponseEntity<Student> getStudent(@RequestParam Long id)
+    public ResponseEntity<CreateStudentResponseDTO> getStudent(@RequestParam Long id)
     {
-        Student s1 =studentService.getStudent(id);
+        CreateStudentResponseDTO s1 =studentService.getStudent(id);
         if(s1==null)
         {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -52,9 +57,9 @@ public class StudentController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Student> updateStudent(@RequestParam Long id,
-                                                 @RequestBody Student studentReq) {
-        Student studentResp = studentService.updateStudent(id, studentReq);
+    public ResponseEntity<UpdateStudentResponseDTO> updateStudent(@RequestParam Long id,
+                                                                  @RequestBody UpdateStudentRequestDTO updateStudentRequestDTO) {
+        UpdateStudentResponseDTO studentResp = studentService.updateStudent(id, updateStudentRequestDTO);
 
         if(studentResp == null) {
             return ResponseEntity.notFound().build();
